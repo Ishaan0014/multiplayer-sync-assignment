@@ -2,6 +2,12 @@
 
 Raw WebSocket cursor/state sync — no Socket.IO/Yjs/Liveblocks/PartyKit/Ably/Pusher, just `ws` on the server and native `WebSocket` on the client.
 
+## Live demo
+
+**https://client-nine-theta-38.vercel.app**
+
+Client on Vercel, WebSocket server on Render — open the link in two tabs (or send it to someone else) to see cursors sync live. The server is on Render's free tier, so it spins down after inactivity; the first connection after a while may take ~30-60s to wake up.
+
 ## Setup
 
 ```bash
