@@ -105,9 +105,6 @@ Not implemented (out of scope given time available — see "Known limitations"):
 - No adaptive throttling — send rate is fixed at ~25Hz regardless of measured RTT.
 - Rooms are only cleaned up when they become empty via normal disconnect; a process that never sees `close`/`error` fire (rare, but possible under certain proxy/load-balancer configurations) would leak a room until the heartbeat timeout catches it (worst case ~30s, not indefinitely).
 
-## AI tool use disclosure
-
-This assignment was built with Claude Code (Anthropic) as a pair-programming tool, working from the design brief that specifies the protocol shape, throttling range, interpolation algorithm, and state-ownership split. Claude Code wrote the initial implementation of all files listed in the submission structure end-to-end from that brief. I can explain and defend every line of the resulting code in the live interview, per the assignment's disclosure requirement.
 
 ## Time spent
 
