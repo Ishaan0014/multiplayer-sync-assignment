@@ -1,3 +1,4 @@
+import { createServer } from "node:http";
 import { WebSocketServer, WebSocket } from "ws";
 import { parseClientMessage } from "./protocol.js";
 import { RoomManager } from "./room.js";
@@ -6,7 +7,17 @@ const PORT = Number(process.env.PORT ?? 8080);
 const HEARTBEAT_INTERVAL_MS = 15_000;
 
 const rooms = new RoomManager();
-const wss = new WebSocketServer({ port: PORT });
+
+// A bare `new WebSocketServer({ port })` opens its own internal HTTP server
+// that only understands the Upgrade handshake — a platform health check
+// hitting `/` with a plain GET would hang. Running our own HTTP server
+// alongside it (attached via `{ server }`) lets us answer that GET while
+// WebSocket upgrades still go to `wss`.
+const httpServer = createServer((_req, res) => {
+  res.writeHead(200, { "content-type": "text/plain" });
+  res.end("multiplayer-sync server ok");
+});
+const wss = new WebSocketServer({ server: httpServer });
 
 interface ConnMeta {
   roomId: string;
@@ -92,4 +103,6 @@ setInterval(() => {
   }
 }, HEARTBEAT_INTERVAL_MS);
 
-console.log(`multiplayer-sync server listening on ws://localhost:${PORT}`);
+httpServer.listen(PORT, () => {
+  console.log(`multiplayer-sync server listening on ws://localhost:${PORT}`);
+});

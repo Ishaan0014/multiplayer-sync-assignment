@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: multiplayer-sync-server
+    runtime: node
+    plan: free
+    rootDir: server
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 20.18.0
